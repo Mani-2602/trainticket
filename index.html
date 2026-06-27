@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Train Ticket Booking Demo</title>
+<style>
+body{font-family:Arial,sans-serif;background:#fff;margin:0;color:#222}
+header{background:#0b6efd;color:#fff;padding:18px;text-align:center}
+.container{max-width:900px;margin:24px auto;padding:20px}
+.card{border:1px solid #ddd;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+input,select,button{padding:10px;border:1px solid #bbb;border-radius:8px;width:100%}
+button{background:#0b6efd;color:#fff;cursor:pointer}
+table{width:100%;border-collapse:collapse;margin-top:16px}
+th,td{border:1px solid #ddd;padding:10px}
+#ticket{display:none;background:#f8f9fa;margin-top:20px;padding:16px;border-radius:10px}
+</style></head><body>
+<header><h1>Train Ticket Booking System</h1></header>
+<div class="container"><div class="card">
+<div class="grid">
+<input id="from" placeholder="From">
+<input id="to" placeholder="To">
+<input id="date" type="date">
+<input id="name" placeholder="Passenger Name">
+</div><br>
+<button onclick="search()">Search Trains</button>
+<div id="results"></div>
+<div id="ticket"></div>
+</div></div>
+<script>
+const trains=[
+{name:"Express 101",no:"10101",time:"06:30",fare:450},
+{name:"Superfast 202",no:"20222",time:"11:15",fare:620},
+{name:"Intercity 303",no:"30333",time:"19:00",fare:390}
+];
+function search(){
+let h='<table><tr><th>No</th><th>Name</th><th>Departure</th><th>Fare</th><th></th></tr>';
+trains.forEach((t,i)=>h+=`<tr><td>${t.no}</td><td>${t.name}</td><td>${t.time}</td><td>₹${t.fare}</td><td><button onclick="book(${i})">Book</button></td></tr>`);
+h+='</table>';
+document.getElementById('results').innerHTML=h;
+}
+function book(i){
+const t=trains[i];
+const f=document.getElementById('from').value||'Source';
+const to=document.getElementById('to').value||'Destination';
+const d=document.getElementById('date').value||'-';
+const n=document.getElementById('name').value||'Passenger';
+const pnr='PNR'+Math.floor(Math.random()*900000000+100000000);
+const tk=document.getElementById('ticket');
+tk.style.display='block';
+tk.innerHTML=`<h2>Booking Confirmed</h2>
+<p><b>Passenger:</b> ${n}</p>
+<p><b>PNR:</b> ${pnr}</p>
+<p><b>Train:</b> ${t.name} (${t.no})</p>
+<p><b>Route:</b> ${f} → ${to}</p>
+<p><b>Date:</b> ${d}</p>
+<p><b>Departure:</b> ${t.time}</p>
+<p><b>Fare:</b> ₹${t.fare}</p>
+<button onclick="window.print()">Print Ticket</button>`;
+}
+</script></body></html>
